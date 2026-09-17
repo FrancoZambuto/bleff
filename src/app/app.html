@@ -1,0 +1,35 @@
+@if (showSplash()) {
+  <app-splash (done)="showSplash.set(false)" />
+}
+
+<header class="topbar">
+  <h1>Bleff</h1>
+  <span class="tagline">el juego del diccionario</span>
+  @if (game.phase() === 'setup' && !showIntro()) {
+    <button class="link help" (click)="showIntro.set(true)">Ver instrucciones</button>
+  }
+</header>
+
+<main [class.with-sidebar]="game.phase() !== 'setup'">
+  @switch (game.phase()) {
+    @case ('setup') {
+      @if (showIntro()) {
+        <app-intro (continue)="showIntro.set(false)" />
+      } @else {
+        <app-setup />
+      }
+    }
+    @case ('scoring') {
+      <app-scoring />
+    }
+    @default {
+      <app-round />
+    }
+  }
+
+  @if (game.phase() !== 'setup') {
+    <app-scoreboard />
+  }
+</main>
+
+<footer class="credits">by FZ</footer>

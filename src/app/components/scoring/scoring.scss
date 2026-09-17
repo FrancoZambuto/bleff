@@ -1,0 +1,91 @@
+.word-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.word {
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+}
+
+.definition {
+  font-style: italic;
+  background: var(--surface-2);
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  line-height: 1.5;
+}
+
+.players {
+  list-style: none;
+  padding: 0;
+  margin: 1.25rem 0;
+  display: grid;
+  gap: 0.5rem;
+
+  li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0.6rem 0.9rem;
+    border-radius: 12px;
+    background: var(--surface-2);
+  }
+}
+
+.who {
+  display: grid;
+  min-width: 0;
+
+  .name {
+    font-weight: 600;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .total {
+    font-size: 0.85rem;
+  }
+}
+
+.players li.reader {
+  background: var(--accent-soft);
+}
+
+.no-points {
+  font-size: 0.85rem;
+  font-style: italic;
+  text-align: right;
+}
+
+.stepper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+
+  .value {
+    min-width: 2.5ch;
+    text-align: center;
+    font-size: 1.4rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+
+    &.positive {
+      color: var(--success);
+    }
+
+    &.negative {
+      color: var(--danger);
+    }
+  }
+}
+
+.full {
+  width: 100%;
+}

@@ -1,0 +1,116 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 1rem;
+
+  .reader {
+    color: var(--accent);
+  }
+}
+
+.hint {
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.center {
+  text-align: center;
+}
+
+.word-box {
+  margin: 1.25rem 0;
+  padding: 1.5rem 1rem;
+  border-radius: 16px;
+  background: var(--surface-2);
+  text-align: center;
+  border: 2px dashed var(--border);
+
+  &.hidden .word {
+    color: var(--muted);
+    letter-spacing: 0.3em;
+  }
+}
+
+.word {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 8vw, 3.2rem);
+  margin: 0;
+  word-break: break-word;
+}
+
+.definition {
+  margin: 1rem 0 0;
+  font-style: italic;
+  line-height: 1.5;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+
+  .btn {
+    flex: 1 1 140px;
+  }
+}
+
+.full {
+  width: 100%;
+}
+
+.timer {
+  position: relative;
+  width: min(260px, 70vw);
+  aspect-ratio: 1;
+  margin: 1.5rem auto;
+
+  svg {
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg);
+  }
+
+  circle {
+    fill: none;
+    stroke-width: 12;
+  }
+
+  .track {
+    stroke: var(--surface-2);
+  }
+
+  .bar {
+    stroke: var(--accent);
+    stroke-linecap: round;
+    transition: stroke-dashoffset 0.25s linear, stroke 0.3s;
+  }
+
+  .clock {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    font-size: clamp(2.5rem, 12vw, 4rem);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+
+  &.urgent {
+    .bar {
+      stroke: var(--danger);
+    }
+
+    .clock {
+      color: var(--danger);
+      animation: pulse 1s ease-in-out infinite;
+    }
+  }
+}
+
+@keyframes pulse {
+  50% {
+    transform: scale(1.08);
+  }
+}

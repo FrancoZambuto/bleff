@@ -1,0 +1,56 @@
+<section class="card">
+  <div class="header">
+    <span class="muted">Ronda {{ game.round() }}</span>
+    <span>Lee: <strong class="reader">{{ game.reader()?.name }}</strong></span>
+  </div>
+
+  @if (game.phase() === 'ready') {
+    <p class="hint">
+      📖 <strong>{{ game.reader()?.name }}</strong>, tomá el dispositivo. Mirá la palabra y su definición sin que el resto la vea,
+      y escribí la definición real en tu papel.
+    </p>
+
+    <div class="word-box" [class.hidden]="!showWord()">
+      @if (showWord()) {
+        <h2 class="word">{{ game.word()?.palabra }}</h2>
+        @if (showDefinition()) {
+          <p class="definition">{{ game.word()?.definicion }}</p>
+        }
+      } @else {
+        <h2 class="word">• • • • •</h2>
+      }
+    </div>
+
+    <div class="row">
+      <button class="btn" (click)="showWord.set(!showWord())">
+        {{ showWord() ? '🙈 Ocultar palabra' : '👀 Ver palabra' }}
+      </button>
+      <button class="btn" (click)="showDefinition.set(!showDefinition())" [disabled]="!showWord()">
+        {{ showDefinition() ? 'Ocultar definición' : 'Ver definición' }}
+      </button>
+      <button class="btn" (click)="changeWord()" title="Si alguien ya conoce la palabra">🔄 Otra palabra</button>
+    </div>
+
+    <button class="btn primary big full" (click)="start()">⏱ Comenzar ronda (2:00)</button>
+  } @else {
+    <p class="hint center">¡A escribir! Cada jugador inventa una definición para:</p>
+    <h2 class="word center">{{ game.word()?.palabra }}</h2>
+
+    <div class="timer" [class.urgent]="urgent()">
+      <svg viewBox="0 0 200 200" aria-hidden="true">
+        <circle class="track" cx="100" cy="100" r="90" />
+        <circle
+          class="bar"
+          cx="100"
+          cy="100"
+          r="90"
+          [attr.stroke-dasharray]="ringLength"
+          [attr.stroke-dashoffset]="ringLength * (1 - progress())"
+        />
+      </svg>
+      <span class="clock" role="timer" aria-live="off">{{ clock() }}</span>
+    </div>
+
+    <button class="btn full" (click)="finishEarly()">Terminar tiempo ya</button>
+  }
+</section>

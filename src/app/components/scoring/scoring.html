@@ -1,0 +1,51 @@
+<section class="card">
+  <h2>⏰ ¡Tiempo!</h2>
+  <p class="muted">
+    {{ game.reader()?.name }} lee todas las definiciones, cada uno vota la que cree verdadera y
+    asignan los puntos de la ronda.
+  </p>
+
+  <div class="word-line">
+    <strong class="word">{{ game.word()?.palabra }}</strong>
+    <button class="link" (click)="showDefinition.set(!showDefinition())">
+      {{ showDefinition() ? 'Ocultar' : 'Revelar' }} definición real
+    </button>
+  </div>
+  @if (showDefinition()) {
+    <p class="definition">{{ game.word()?.definicion }}</p>
+  }
+
+  <ul class="players">
+    @for (p of playersService.players(); track p.id) {
+      @let isReader = p.id === game.reader()?.id;
+      <li [class.reader]="isReader">
+        <div class="who">
+          <span class="name">
+            {{ p.name }}
+            @if (isReader) {
+              <span class="badge">Lector</span>
+            }
+          </span>
+          <span class="muted total">Total: {{ p.score + roundPoints(p.id) }}</span>
+        </div>
+        @if (isReader) {
+          <span class="muted no-points">No suma esta ronda</span>
+        } @else {
+          <div class="stepper">
+            <button class="icon big" (click)="change(p.id, -1)" aria-label="Restar punto a {{ p.name }}">−</button>
+            <span
+              class="value"
+              [class.positive]="roundPoints(p.id) > 0"
+              [class.negative]="roundPoints(p.id) < 0"
+            >
+              {{ roundPoints(p.id) > 0 ? '+' : '' }}{{ roundPoints(p.id) }}
+            </span>
+            <button class="icon big" (click)="change(p.id, 1)" aria-label="Sumar punto a {{ p.name }}">+</button>
+          </div>
+        }
+      </li>
+    }
+  </ul>
+
+  <button class="btn primary big full" (click)="saveRound()">Guardar puntos y siguiente ronda ➜</button>
+</section>

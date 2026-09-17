@@ -1,0 +1,52 @@
+<section class="card">
+  <h2>Jugadores</h2>
+  <p class="muted">Agregá al menos {{ minPlayers }} jugadores. Se guardan en este navegador junto con sus puntos.</p>
+
+  <div class="add">
+    <input
+      type="text"
+      placeholder="Nombre del jugador"
+      maxlength="20"
+      [value]="newName()"
+      (input)="newName.set($any($event.target).value)"
+      (keydown.enter)="addPlayer()"
+      [disabled]="drawing()"
+      autofocus
+    />
+    <button type="button" class="btn primary" (click)="addPlayer()" [disabled]="drawing()">Agregar</button>
+  </div>
+  @if (error()) {
+    <p class="error">{{ error() }}</p>
+  }
+
+  <ul class="players">
+    @for (p of playersService.players(); track p.id) {
+      <li [class.reader]="isReader(p.id)">
+        <span class="name">{{ p.name }}</span>
+        @if (!drawing() && game.state().readerId === p.id) {
+          <span class="badge">Lector</span>
+        }
+        <span class="score">{{ p.score }} pts</span>
+        <button class="icon" title="Quitar" (click)="removePlayer(p.id)" [disabled]="drawing()">✕</button>
+      </li>
+    } @empty {
+      <li class="empty">Todavía no hay jugadores.</li>
+    }
+  </ul>
+
+  <div class="actions">
+    <button class="btn" (click)="drawReader()" [disabled]="!canDraw()">
+      🎲 {{ drawing() ? 'Sorteando…' : 'Sortear primer lector' }}
+    </button>
+    <button class="btn primary big" (click)="game.startGame()" [disabled]="!game.reader() || drawing()">
+      Comenzar partida
+    </button>
+  </div>
+
+  @if (playersService.players().length) {
+    <div class="footer">
+      <button class="link" (click)="playersService.resetScores()">Reiniciar puntajes</button>
+      <button class="link danger" (click)="playersService.clear()">Borrar todos los jugadores</button>
+    </div>
+  }
+</section>
